@@ -1,0 +1,20 @@
+FROM openjdk:8u212-jdk-slim-stretch
+
+
+RUN mkdir -p /usr/src/kafka/
+WORKDIR /usr/src/kafka/
+RUN cd /usr/src/kafka/
+RUN apt-get update \
+    && apt-get -y install wget
+RUN wget http://apache.website-solution.net/kafka/2.2.0/kafka_2.12-2.2.0.tgz
+RUN tar -xzf kafka_2.12-2.2.0.tgz 
+
+ENV KAFKA kafka_2.12-2.2.0
+
+ENV PATH /usr/src/kafka/$KAFKA/bin:/usr/local/bin:$PATH
+WORKDIR /usr/src/kafka/$KAFKA
+COPY kafka/kafka.startprocess.sh ./
+# ENTRYPOINT [ "bin/zookeeper-server-start.sh", "/usr/src/kafka/kafka_2.12-2.2.0/config/zookeeper.properties"]
+
+#CMD ["bin/kafka-server-start.sh","config/server.properties"]
+CMD ["sh","kafka.startprocess.sh"]
