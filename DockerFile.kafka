@@ -14,6 +14,8 @@ ENV KAFKA kafka_2.12-2.2.0
 ENV PATH /usr/src/kafka/$KAFKA/bin:/usr/local/bin:$PATH
 WORKDIR /usr/src/kafka/$KAFKA
 COPY kafka/kafka.startprocess.sh ./
+
+COPY kafka/server.properties /usr/src/kafka/$KAFKA/config/
 # ENTRYPOINT [ "bin/zookeeper-server-start.sh", "/usr/src/kafka/kafka_2.12-2.2.0/config/zookeeper.properties"]
 
 #CMD ["bin/kafka-server-start.sh","config/server.properties"]
