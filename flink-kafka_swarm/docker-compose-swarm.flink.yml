@@ -1,0 +1,31 @@
+version: "3.2"
+services:
+  jobmanager:
+    image: flink:1.5-scala_2.11
+    # Exposing ports is unnecessary - services on the same network can access each other's containers on any port.
+    #expose:
+    #  - "6123"
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - webnet
+  taskmanager:
+    image: flink:1.5-scala_2.11
+    # Exposing ports is unnecessary - services on the same network can access each other's containers on any port.
+    #expose:
+    #  - "6121"
+    #  - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    networks:
+      - webnet
+networks:
+  webnet:
