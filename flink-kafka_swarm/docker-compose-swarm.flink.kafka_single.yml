@@ -1,0 +1,58 @@
+version: "3.2"
+services:
+  jobmanager:
+    image: flink:1.5-scala_2.11
+    # Exposing ports is unnecessary - services on the same network can access each other's containers on any port.
+    #expose:
+    #  - "6123"
+    ports:
+      - "8081:8081"
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+  taskmanager:
+    image: flink:1.5-scala_2.11
+    # Exposing ports is unnecessary - services on the same network can access each other's containers on any port.
+    #expose:
+    #  - "6121"
+    #  - "6122"
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    links:
+      - "jobmanager:jobmanager"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=jobmanager
+    deploy:
+      placement:
+        constraints: [node.role != manager]
+    networks:
+      - webnet
+
+  kafka:
+    image: pigpiggcp/kafka.service
+    ports:
+      - "9092:9092"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+  visualizer:
+    image: dockersamples/visualizer:stable
+    ports:
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+networks:
+  webnet:

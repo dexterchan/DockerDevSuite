@@ -1,0 +1,22 @@
+# Use root/example as user/password credentials
+version: "3.1"
+
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - "/data/mysqldb:/var/lib/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: ppmtcourse
+      MYSQL_USER: agileintelligence
+      MYSQL_PASSWORD: password
+  #adminer:
+  #  image: adminer
+  #  restart: always
+  #  ports:
+  #    - 8080:8080
