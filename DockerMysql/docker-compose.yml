@@ -15,6 +15,7 @@ services:
       MYSQL_DATABASE: ppmtcourse
       MYSQL_USER: agileintelligence
       MYSQL_PASSWORD: password
+      
   #adminer:
   #  image: adminer
   #  restart: always
