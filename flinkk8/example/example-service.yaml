@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: meow-svc
 spec:
-  type: NodePort
+  #type: NodePort
   ports:
-    - port: 8080
+    - name: ui
+      port: 8080
       targetPort: 8080
       protocol: TCP
   selector:

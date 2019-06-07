@@ -8,7 +8,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /meow
+          - path: /p
             backend:
               serviceName: meow-svc
               servicePort: 8080
