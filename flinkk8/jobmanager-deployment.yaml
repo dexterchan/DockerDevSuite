@@ -27,3 +27,78 @@ spec:
           env:
             - name: JOB_MANAGER_RPC_ADDRESS
               value: flink-jobmanager
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: flink-taskmanager
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: taskmanager
+    spec:
+      containers:
+        - name: taskmanager
+          image: flink:1.7
+          args:
+            - taskmanager
+          ports:
+            - containerPort: 6121
+              name: data
+            - containerPort: 6122
+              name: rpc
+            - containerPort: 6125
+              name: query
+          env:
+            - name: JOB_MANAGER_RPC_ADDRESS
+              value: flink-jobmanager
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financeservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: financeservice
+  template:
+    metadata:
+      labels:
+        app: financeservice
+    spec:
+      containers:
+        - name: peer2peerworkcontractcluster
+          # Replace [GCLOUD_PROJECT] with your project ID.
+          image: pigpiggcp/peer2peerworkcontractcluster-financeservice:latest
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: 8888
+          #    scheme: HTTP
+          #  initialDelaySeconds: 300
+          #  timeoutSeconds: 30
+          resources:
+            requests:
+              memory: "100Mi"
+            limits:
+              memory: "300Mi"
+          # This setting makes nodes pull the docker image every time before
+          # starting the pod. This is useful when debugging, but should be turned
+          # off in production.
+          imagePullPolicy: Always
+
+          # The traderepository process listens on port 8080 for web traffic by default.
+          ports:
+            - name: financehttp
+              containerPort: 8888
+          env:
+            - name: PORT
+              value: "8888"
+            - name: financeService_jwtPrivateKey
+              value: "financeService_jwtPrivateKey"
+            - name: customerservice
+              value: customerservice-service.default.svc.cluster.local:9000/api/customer

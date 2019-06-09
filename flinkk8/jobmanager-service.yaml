@@ -16,3 +16,31 @@ spec:
   selector:
     app: flink
     component: jobmanager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flink-jobmanager-ext
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      protocol: TCP
+      port: 8081
+  selector:
+    app: flink
+    component: jobmanager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: financeservice-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8888
+      #nodePort: 30390
+      protocol: TCP
+      targetPort: 8888
+  selector:
+    app: financeservice
