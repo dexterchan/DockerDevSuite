@@ -1,0 +1,59 @@
+FROM debian:stretch-slim
+
+ENV SOFTWARE_PATH=software
+
+RUN mkdir -p /opt/java/
+RUN mkdir -p /opt/flink
+ENV JAVA jre1.8.0_211
+ENV JAVA_P jre-8u211-linux-x64
+
+# JAVA installation
+COPY ${SOFTWARE_PATH}/${JAVA_P}.tar.gz /opt/java/
+RUN cd /opt/java/
+WORKDIR /opt/java/
+RUN tar -xzf ${JAVA_P}.tar.gz 
+RUN chmod -R 750 /opt/java/
+RUN rm -f ${JAVA_P}.tar.gz 
+RUN ln -s /opt/java/${JAVA}/bin/java /usr/local/bin
+RUN chmod -R 750 /usr/local/bin/java
+ENV JAVA_HOME /opt/java/${JAVA}/
+
+
+
+
+# Configure Flink version
+ENV FLINK_VERSION=1.8.0 \
+    HADOOP_SCALA_VARIANT=scala_2.12 \
+    GPG_KEY=1C1E2394D3194E1944613488F320986D35C33D6A
+
+# Prepare environment
+ENV FLINK_HOME=/opt/flink
+ENV PATH=$FLINK_HOME/bin:$PATH
+RUN groupadd --system --gid=9999 flink && \
+    useradd --system --home-dir $FLINK_HOME --uid=9999 --gid=flink flink
+WORKDIR $FLINK_HOME
+
+
+# Install Flink
+# FLINK installation
+
+ENV FLINK flink-${FLINK_VERSION}
+ENV FLINK_P ${FLINK}-bin-${HADOOP_SCALA_VARIANT}.tgz
+COPY ${SOFTWARE_PATH}/${FLINK_P} $FLINK_HOME
+
+RUN tar -xzf ${FLINK_P}
+RUN chmod -R 750 $FLINK_HOME
+RUN rm -f ${FLINK_P}
+RUN sed -i 's/rest.port: 8081/rest.port: 9081/g' ${FLINK}/conf/flink-conf.yaml
+
+RUN  chown -R flink:flink .;
+RUN  chown -R flink:flink /opt/java/;
+RUN  chown -R flink:flink /usr/local/bin/java
+
+
+# Configure container
+COPY docker-entrypoint.sh /
+RUN chmod 751 /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+EXPOSE 6123 9081
+CMD ["help"]
