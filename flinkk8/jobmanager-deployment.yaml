@@ -12,7 +12,8 @@ spec:
     spec:
       containers:
         - name: jobmanager
-          image: flink:1.7
+          image: pigpiggcp/flinkc8
+          #image: flink:1.8
           args:
             - jobmanager
           ports:
@@ -42,7 +43,8 @@ spec:
     spec:
       containers:
         - name: taskmanager
-          image: flink:1.7
+          image: pigpiggcp/flinkc8
+          #image: flink:1.8
           args:
             - taskmanager
           ports:
