@@ -18,10 +18,10 @@ RUN ln -s /opt/java/${JAVA}/bin/java /usr/local/bin
 RUN chmod -R 750 /usr/local/bin/java
 ENV JAVA_HOME /opt/java/${JAVA}/
 
-RUN set -ex; \
-    apt-get update; \
-    apt-get -y install wget gpg; \
-    rm -rf /var/lib/apt/lists/*
+#RUN set -ex; \
+#    apt-get update; \
+#    apt-get -y install wget gpg; \
+#    rm -rf /var/lib/apt/lists/*
 
 # Grab gosu for easy step-down from root
 # software/gosu-amd64
