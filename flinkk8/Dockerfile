@@ -55,6 +55,7 @@ RUN tar -xzf ${FLINK_P}
 RUN chmod -R 750 $FLINK_HOME
 RUN rm -f ${FLINK_P}
 #RUN sed -i 's/#rest.port: 8081/rest.port: 9081/g' ${FLINK}/conf/flink-conf.yaml
+RUN sed -i 's/taskmanager.numberOfTaskSlots: 1/taskmanager.numberOfTaskSlots: 10/g' ${FLINK}/conf/flink-conf.yaml
 
 RUN  chown -R flink:flink .;
 RUN  chown -R flink:flink /opt/java/;
