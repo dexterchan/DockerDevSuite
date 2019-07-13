@@ -61,6 +61,14 @@ RUN  chown -R flink:flink .;
 RUN  chown -R flink:flink /opt/java/;
 RUN  chown -R flink:flink /usr/local/bin/java
 
+
+COPY software/peer2peer-fc16866f48fd.json /
+ENV GOOGLE_APPLICATION_CREDENTIALS=/peer2peer-fc16866f48fd.json
+
+
+ARG job_jar=NOT_SET
+ADD $job_jar $FLINK_HOME/job.jar
+
 ENV FLINK_HOME=/opt/flink/${FLINK}
 
 WORKDIR $FLINK_HOME
