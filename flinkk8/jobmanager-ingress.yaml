@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   name: jobmanager-ingress
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    kubernetes.io/ingress.allow-http: "true"
-    nginx.ingress.kubernetes.io/ssl-redirect: \"false\"
+    #kubernetes.io/ingress.class: nginx
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+    #kubernetes.io/ingress.allow-http: "true"
+    #nginx.ingress.kubernetes.io/ssl-redirect: \"false\"
     #prometheus.io/scrape: "true"
     #prometheus.io/path: /metrics
     #prometheus.io/port: "80"
@@ -14,10 +14,10 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/ecashorder/*
-            backend:
-              serviceName: financeservice-service
-              servicePort: 8888
+          # - path: /api/ecashorder/*
+          #   backend:
+          #     serviceName: financeservice-service
+          #     servicePort: 8888
           - path: /*
             backend:
               serviceName: flink-jobmanager-ext

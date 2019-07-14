@@ -61,7 +61,20 @@ RUN  chown -R flink:flink .;
 RUN  chown -R flink:flink /opt/java/;
 RUN  chown -R flink:flink /usr/local/bin/java
 
+
+COPY software/peer2peer-fc16866f48fd.json /
+ENV GOOGLE_APPLICATION_CREDENTIALS=/peer2peer-fc16866f48fd.json
+
+
+#ARG job_jar=NOT_SET
+#ADD $job_jar $FLINK_HOME/job.jar
+#ENV FLINK_JOB=$FLINK_HOME
 ENV FLINK_HOME=/opt/flink/${FLINK}
+
+#COPY the job
+#COPY software/runjob.sh $FLINK_JOB
+#RUN chmod a+x ${FLINK_JOB}/runjob.sh
+#RUN chown -R flink:flink ${FLINK_JOB}/runjob.sh
 
 WORKDIR $FLINK_HOME
 
@@ -70,4 +83,4 @@ COPY docker-entrypoint.sh /
 RUN chmod 751 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 6123 9081
-CMD ["help"]
+CMD ["--help"]

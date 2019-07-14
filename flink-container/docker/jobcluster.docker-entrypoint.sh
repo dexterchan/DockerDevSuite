@@ -62,7 +62,6 @@ elif [ "$1" = "jobmanager" ]; then
 
     echo "config file: " && grep '^[^\n#]' "${CONF_FILE}"
     exec $(drop_privs_cmd) "$FLINK_HOME/bin/jobmanager.sh" start-foreground "$@"
-
 elif [ "$1" = "taskmanager" ]; then
     shift 1
     echo "Starting Task Manager"
