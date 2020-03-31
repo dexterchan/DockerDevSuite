@@ -9,3 +9,4 @@ RUN apk add --no-cache python3 && \
 RUN apk add pkgconf
 RUN apk add build-base
 RUN apk add python3-dev
+RUN apk add docker
