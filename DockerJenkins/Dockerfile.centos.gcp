@@ -1,0 +1,28 @@
+FROM docker:17.12.0-ce as static-docker-source
+FROM  jenkins/jenkins:centos
+
+USER root
+RUN yum install -y python3 
+RUN python3 -m ensurepip 
+RUN pip3 install pip setuptools
+RUN if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi
+RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; fi
+
+RUN pip3 install requests
+
+RUN yum install -y yum-utils wget
+
+RUN yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+RUN wget https://download.docker.com/linux/centos/7/x86_64/edge/Packages/containerd.io-1.2.6-3.3.el7.x86_64.rpm
+RUN yum install -y  containerd.io-1.2.6-3.3.el7.x86_64.rpm
+RUN yum install -y docker-ce docker-ce-cli
+
+WORKDIR /tmp
+COPY yum.update.sh /tmp/
+RUN bash yum.update.sh
+
+RUN yum install -y google-cloud-sdk
+
+VOLUME ["/root/.config"]

@@ -2,7 +2,7 @@ version: "3"
 services:
   jenkins:
     container_name: jenkins
-    image: jenkins/jenkins:lts-alpine-py-gcp
+    image: jenkins/jenkins:lts-py-gcp
     ports:
       - "9000:8080"
     volumes:
