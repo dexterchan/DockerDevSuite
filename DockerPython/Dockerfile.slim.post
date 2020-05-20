@@ -1,0 +1,7 @@
+from tmpslim
+
+USER root
+ENV CLOUD_SDK_VERSION=287.0.0
+ENV PATH /google-cloud-sdk/bin:$PATH
+ENV CLOUDSDK_PYTHON=python3
+VOLUME ["/root/.config"]
