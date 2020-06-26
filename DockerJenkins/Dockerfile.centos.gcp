@@ -2,6 +2,7 @@ FROM docker:17.12.0-ce as static-docker-source
 FROM  jenkins/jenkins:centos
 
 USER root
+
 RUN yum install -y python3 
 RUN python3 -m ensurepip 
 RUN pip3 install pip setuptools
@@ -10,7 +11,12 @@ RUN if [ ! -e /usr/bin/python ]; then ln -sf /usr/bin/python3 /usr/bin/python; f
 
 RUN pip3 install requests
 
+RUN curl -sL https://rpm.nodesource.com/setup_12.x |  bash -
+RUN yum clean all
+RUN yum install -y gcc-c++ make
+RUN yum install -y nodejs
 RUN yum install -y yum-utils wget
+RUN dnf group install "Development Tools" -y
 
 RUN yum-config-manager \
     --add-repo \
@@ -24,5 +30,5 @@ COPY yum.update.sh /tmp/
 RUN bash yum.update.sh
 
 RUN yum install -y google-cloud-sdk
-
+RUN alias python=python3
 VOLUME ["/root/.config"]
