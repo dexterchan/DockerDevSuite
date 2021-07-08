@@ -9,7 +9,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - "/data/mysqldb:/var/lib/mysql"
+      - "~/data/mysqldb:/var/lib/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: ppmtcourse

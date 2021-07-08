@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  xray:
+    entrypoint:
+      ["/usr/bin/xray", "-t", "0.0.0.0:2000", "-b", "0.0.0.0:2000", "-o"]
+    image: amazon/aws-xray-daemon
+    restart: always
+    ports:
+      - 2000:2000/udp
+    volumes:
+      - "~/.aws/:/root/.aws/:ro"
+    container_name: xray-daemon
+
+    environment:
+      AWS_REGION: us-east-2

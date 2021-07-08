@@ -1,0 +1,15 @@
+{
+  "resultItemsPerPage": 50,
+  "limitQueryDefaultSelectTop": 100,
+  "servers": [
+    {
+      "id": "0f6536a1-c232-4515-942a-c0fb56d362b2",
+      "name": "vm-ssh",
+      "client": "mysql",
+      "host": "192.168.1.14",
+      "port": 3306,
+      "user": "root",
+      "password": "example"
+    }
+  ]
+}
