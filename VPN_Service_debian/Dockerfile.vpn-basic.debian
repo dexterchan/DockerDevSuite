@@ -3,13 +3,14 @@ from debian:stable-slim
 ENV WORKSPACE=/workspace
 RUN apt update -y && \
     apt upgrade -y && \
-    apt install -y openvpn wget && \
+    apt install -y openvpn wget ufw procps systemd && \
     mkdir -p $WORKSPACE && \
     mkdir -p /etc/openvpn/setup
 
 WORKDIR ${WORKSPACE}
 RUN wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz && \
     tar xvf EasyRSA-unix-v3.0.6.tgz
+RUN echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 
 
 CMD ["bash"]
