@@ -1,3 +1,4 @@
 software/
 *.tgz
 tools/
+vpn_config

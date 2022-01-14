@@ -1,6 +1,8 @@
 #!/bin/bash
 rm -Rf tools
+rm -Rf vpn_config
 mkdir -p tools 
+mkdir -p vpn_config
 pushd tools
 wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.6/EasyRSA-unix-v3.0.6.tgz
 tar xvf EasyRSA-unix-v3.0.6.tgz

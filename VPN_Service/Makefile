@@ -1,4 +1,8 @@
 
+build_vpn_docker:
+	docker build -t vpn-server-base:debian -f Dockerfile.vpn-basic.debian .
+
+build_ca: build_vpn_docker
 build_ca:
 	./build.local_ca.sh
 
