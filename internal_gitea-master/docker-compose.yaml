@@ -1,0 +1,45 @@
+version: "3"
+
+networks:
+  gitea_network:
+    external: false
+
+services:
+  gitea:
+    image: gitea/gitea:1.16.8
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: always
+    networks:
+      - gitea_network
+    volumes:
+      - ./gitea:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    expose:
+      - 3000
+    # ports:
+    #   - "3000:3000"
+    #   - "222:22"
+  jumper:
+    image: ubuntu:latest
+    command: sleep infinity
+    container_name: jumper
+    restart: always
+    networks:
+      - gitea_network
+  nginx:
+    image: nginx:latest
+    container_name: reverse-proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx_config/nginx.conf:/etc/nginx/nginx.conf
+      - ./cert:/ssl/
+    networks:
+      - gitea_network
+
